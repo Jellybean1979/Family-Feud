@@ -1,0 +1,81 @@
+body {
+    background-image: url('Family-Feud-Background.jpg'); /* Points to your background image */
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-position: center; /* Centers the image in the viewport */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: 1fr; /* Default to one column */
+    gap: 10px; /* Add spacing between boxes */
+    justify-content: center; /* Center the single column */
+}
+
+.answers.more-than-5 {
+    grid-template-columns: repeat(2, 1fr); /* Switch to two columns when there are more than 5 answers */
+    justify-content: start; /* Align items properly for two columns */
+}
+
+
+
+.tile {
+    width: 100%; /* Let the grid control the width */
+    min-height: 50px; /* Maintain a consistent height for tiles */
+    text-align: center; /* Center-align the text inside */
+    background: lightblue; /* Background color for the tile */
+    padding: 10px; /* Add some padding for better readability */
+    border: 1px solid #000; /* Add a border for defined tile shapes */
+    cursor: pointer; /* Add hover cursor effect */
+    box-sizing: border-box; /* Include padding/border in width/height calculations */
+    font-size: 18px; /* Ensure text is legible */
+    overflow-wrap: break-word; /* Wrap long words if needed */
+}
+
+
+.big-strike {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 300px;        /* Make the big strike extra large */
+    font-weight: bold;       /* Make it bold for emphasis */
+    color: red;              /* Use a striking red color */
+    z-index: 1000;           /* Ensure it appears above all other elements */
+}
+
+#next-round {
+    display: none; /* Keep it hidden until it's needed */
+    margin: 20px auto; /* Center the button horizontally */
+    padding: 10px 20px; /* Add some padding for the button */
+    font-size: 16px; /* Make the text size readable */
+    border: none; /* Remove the default border */
+    background-color: #4CAF50; /* Add a green background for style */
+    color: white; /* Set the text color to white */
+    border-radius: 5px; /* Add rounded corners for a modern look */
+    cursor: pointer; /* Add a pointer cursor on hover */
+}
+
+#next-round:hover {
+    background-color: #45a049; /* Slightly darker green when hovering */
+}
+
+.scoreboard {
+    display: flex; /* Arrange the boxes side by side */
+    justify-content: space-between; /* Place one box on the left and one on the right */
+    align-items: center; /* Align the boxes vertically */
+    margin: 20px 0; /* Add spacing above and below the scoreboard */
+}
+
+.team-score {
+    width: 150px; /* Set a fixed width for each score box */
+    padding: 10px; /* Add padding inside the box */
+    background-color: white; /* Set the background to white */
+    color: black; /* Black text for readability */
+    border: 2px solid black; /* Add a border for emphasis */
+    border-radius: 10px; /* Optional: Round the corners for a softer design */
+    text-align: center; /* Center the content inside the box */
+    font-family: Arial, sans-serif; /* Match the font style of the game */
+    font-weight: bold; /* Emphasize the text */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}

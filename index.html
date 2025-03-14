@@ -1,0 +1,128 @@
+Try AI directly in your favorite apps … Use Gemini to generate drafts and refine content, plus get Gemini Advanced with access to Google’s next-gen AI for $19.99 $0 for 1 month
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Langley's Family Feud</title>
+    <style>
+        /* Basic styles for layout */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #f4f4f4; /* Light gray background for header */
+            padding: 10px;
+            font-size: 32px; /* Larger font size for the header */
+            font-weight: bold; /* Bold text for header */
+            margin: 0;
+        }
+
+        .question {
+    background-color: white; /* Set the background to white for better contrast */
+    color: black; /* Ensure the text is legible on the white background */
+    padding: 10px; /* Add padding for spacing inside the box */
+    margin: 20px auto; /* Center the box horizontally and add vertical spacing */
+    display: inline-block; /* Adjust the box size to fit the question text */
+    border: 2px solid black; /* Optional: Add a border for emphasis */
+    border-radius: 10px; /* Optional: Round the corners for a softer look */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for depth */
+    font-size: 24px; /* Make the question text prominent */
+    font-weight: bold; /* Emphasize the text */
+}
+
+        
+
+.answers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Force exactly two equal-width columns */
+    gap: 10px; /* Add spacing between boxes */
+    justify-items: start; /* Align items to the start of each column */
+    align-items: start; /* Ensure items align properly within rows */
+    margin: 0 auto; /* Center the grid container itself if needed */
+    max-width: 650px; /* Optional: Set a maximum width for the container */
+}
+
+
+        .tile {
+            width: 300px;           /* Fixed width for all tiles */
+            min-height: 50px;       /* Minimum height for tiles */
+            background: lightblue;  /* Tile background color */
+            border: 1px solid #000; /* Add a border for the tile */
+            padding: 10px;          /* Add padding for better readability */
+            box-sizing: border-box; /* Include padding/border in sizing */
+            text-align: center;     /* Center-align the text */
+            font-size: 18px;        /* Set a consistent font size */
+            overflow-wrap: break-word; /* Ensure long words break properly */
+            cursor: pointer;        /* Add a pointer cursor for interactivity */
+        }
+
+        .tile.revealed {
+            background: lightgreen; /* Change background for revealed tiles */
+            cursor: default;        /* Disable pointer effect on revealed tiles */
+        }
+
+        .strike-zone {
+    display: flex; /* Use flexbox to arrange strikes side by side */
+    gap: 10px; /* Add spacing between the strikes */
+    justify-content: center; /* Center-align the strikes horizontally */
+    margin: 20px; /* Add some margin around the strike zone */
+}
+
+.strike {
+    color: red; /* Keep the red color for strikes */
+    font-size: 30px; /* Ensure the strikes are noticeable */
+    font-weight: bold; /* Emphasize the strikes with bold text */
+}
+
+
+        .input-box {
+            margin: 20px;
+        }
+
+        .instructions {
+            display: none; /* Hide instructions initially */
+            font-size: 16px;
+            margin: 20px;
+        }
+
+        #help {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Langley's Family Feud</div> <!-- Updated Header -->
+    <div class="question">Question will appear here</div>
+    <div class="scoreboard">
+        <div class="team-score" id="team-1-score">
+            <h3>Team 1</h3>
+            <p>0</p> <!-- Initial score -->
+        </div>
+        <div class="team-score" id="team-2-score">
+            <h3>Team 2</h3>
+            <p>0</p> <!-- Initial score -->
+        </div>
+    </div>
+    
+    <div class="answers">
+        <!-- Tiles will be dynamically added here using JavaScript -->
+    </div>
+    <div class="input-box">
+        <input type="text" id="user-answer" placeholder="Type your answer here" />
+        <button onclick="submitAnswer()">Submit</button>
+    </div>
+    <div class="strike-zone"></div>
+    <button id="next-round" style="display: none;">Next Round</button>
+    <button id="help" onclick="toggleInstructions()">Help</button>
+    <div class="instructions">
+        Enter an answer in the text box and click "Submit." If your answer matches one of the hidden tiles, it will be revealed. Each team can keep answering until they get three strikes. The team with the most points after 5 rounds wins!
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
