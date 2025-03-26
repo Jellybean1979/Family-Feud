@@ -105,9 +105,9 @@ body {
 }
 
 /* Orientation-specific rules */
-/*@media (orientation: portrait) {
+@media (orientation: portrait) {
     body {
-        background-size: contain;
+        background-size: cover;
     }
 
     .answers.more-than-5 {
@@ -148,4 +148,4 @@ body {
         width: 200px;
     }
 }
-*/
+
