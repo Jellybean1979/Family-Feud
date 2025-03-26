@@ -79,25 +79,72 @@ body {
     font-weight: bold; /* Emphasize the text */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
+
+/* General mobile optimization */
 @media (max-width: 768px) {
     body {
-        background-size: contain; /* Adjust the background image for smaller screens */
+        background-size: contain;
     }
 
     .answers.more-than-5 {
-        grid-template-columns: 1fr; /* Switch to a single column for better mobile readability */
+        grid-template-columns: 1fr;
     }
 
     .tile {
-        font-size: 16px; /* Reduce the font size slightly */
-        padding: 8px; /* Adjust padding for smaller screens */
+        font-size: 16px;
+        padding: 8px;
     }
 
     .team-score {
-        width: 100%; /* Allow the score boxes to take the full width of the screen */
+        width: 100%;
     }
 
     #next-round {
-        width: 100%; /* Center and resize the button */
+        width: 100%;
+    }
+}
+
+/* Orientation-specific rules */
+@media (orientation: portrait) {
+    body {
+        background-size: contain;
+    }
+
+    .answers.more-than-5 {
+        grid-template-columns: 1fr;
+    }
+
+    .tile {
+        font-size: 14px;
+    }
+
+    .team-score {
+        width: 90%;
+    }
+
+    #next-round {
+        width: 90%;
+    }
+}
+
+@media (orientation: landscape) {
+    body {
+        background-size: cover;
+    }
+
+    .answers.more-than-5 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tile {
+        font-size: 18px;
+    }
+
+    .team-score {
+        width: 150px;
+    }
+
+    #next-round {
+        width: 200px;
     }
 }
