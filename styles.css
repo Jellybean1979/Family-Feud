@@ -107,7 +107,9 @@ body {
 /* Orientation-specific rules */
 @media (orientation: portrait) {
     body {
-        background-size: cover;
+        background-size: cover; /* Ensure the image covers the screen */
+        background-position: top center; /* Align the image from the top for better visibility */
+        height: 100vh; /* Make sure the body element matches the viewport height */
     }
 
     .answers.more-than-5 {
