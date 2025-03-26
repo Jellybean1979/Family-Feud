@@ -15,11 +15,11 @@ const scenarios = [
         answers: [
             { text: "Watch TV/movies", percentage: 27, keywords: ["TV", "movie", "television", "movies", "video", "videos"] },
             { text: "Read a book", percentage: 20, keywords: ["read", "book", "novel", "magazine", "newspaper"] },
-            { text: "Take a shower", percentage: 18, keywords: ["shower", "bath"] },
+            { text: "Take a bath", percentage: 18, keywords: ["shower", "bath"] },
             { text: "Go for a walk", percentage: 15, keywords: ["walk", "run", "stroll", "hike", "jog"] },
             { text: "Listen to music", percentage: 10, keywords: ["music", "podcast", "headphones"] },
             { text: "Have a drink", percentage: 7, keywords: ["cocktail", "drink", "beer", "wine", "liquor"] },
-            { text: "Meditate/yoga", percentage: 3, keywords: ["zen", "breath", "innerpeace", "yoga", "exercise"] },
+            { text: "Meditate/yoga", percentage: 3, keywords: ["zen", "breath", "innerpeace", "yoga", "exercise", "Meditate", "pray", ] },
             { text: "Spend time with friends/family", percentage: 9, keywords: ["friends", "family", "kids"] },
         ],
     },
