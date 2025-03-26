@@ -44,7 +44,7 @@ const scenarios = [
             { text: "Try local food", percentage: 15, keywords: ["food", "cuisine", "restaurants"] },
             { text: "Take photos", percentage: 15, keywords: ["photo", "photos", "photography"] },
             { text: "Go shopping", percentage: 14, keywords: ["shopping", "spend money", "souvenirs"] },
-            { text: "Visit attractions", percentage: 13, keywords: ["sightseeing", "tours", "landmarks", "landmark", "tour", "attractions"] },
+            { text: "Visit attractions", percentage: 13, keywords: ["sightseeing", "tours", "landmarks", "landmark", "tour", "attractions", "sightsee"] },
         ],
     },
     {
