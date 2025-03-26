@@ -79,3 +79,25 @@ body {
     font-weight: bold; /* Emphasize the text */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
+@media (max-width: 768px) {
+    body {
+        background-size: contain; /* Adjust the background image for smaller screens */
+    }
+
+    .answers.more-than-5 {
+        grid-template-columns: 1fr; /* Switch to a single column for better mobile readability */
+    }
+
+    .tile {
+        font-size: 16px; /* Reduce the font size slightly */
+        padding: 8px; /* Adjust padding for smaller screens */
+    }
+
+    .team-score {
+        width: 100%; /* Allow the score boxes to take the full width of the screen */
+    }
+
+    #next-round {
+        width: 100%; /* Center and resize the button */
+    }
+}
