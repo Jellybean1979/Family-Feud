@@ -1,128 +1,1176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Langley's Family Feud</title>
-    <style>
-        /* Basic styles for layout */
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            background-color: #f4f4f4; /* Light gray background for header */
-            padding: 10px;
-            font-size: 32px; /* Larger font size for the header */
-            font-weight: bold; /* Bold text for header */
-            margin: 0;
-        }
-
-        .question {
-    background-color: white; /* Set the background to white for better contrast */
-    color: black; /* Ensure the text is legible on the white background */
-    padding: 10px; /* Add padding for spacing inside the box */
-    margin: 20px auto; /* Center the box horizontally and add vertical spacing */
-    display: inline-block; /* Adjust the box size to fit the question text */
-    border: 2px solid black; /* Optional: Add a border for emphasis */
-    border-radius: 10px; /* Optional: Round the corners for a softer look */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for depth */
-    font-size: 24px; /* Make the question text prominent */
-    font-weight: bold; /* Emphasize the text */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Langley's Family Feud</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════════ */
+:root {
+  --navy:    #0a1628;
+  --navy-2:  #0f2044;
+  --navy-3:  #1a3060;
+  --gold:    #f5c842;
+  --gold-2:  #e6a800;
+  --gold-3:  #fde97a;
+  --red:     #c0182a;
+  --red-2:   #e02030;
+  --white:   #ffffff;
+  --offwhite:#e8eaf0;
+  --tile-bg: #1a3060;
+  --tile-reveal: #0f7a3c;
+  --tile-border: #f5c842;
 }
 
-        
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated star-burst background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 50%, rgba(245,200,66,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 50%, rgba(245,200,66,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 0%,  rgba(26,48,96,0.9)   0%, transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.015) 60px,
+      rgba(255,255,255,0.015) 61px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.015) 60px,
+      rgba(255,255,255,0.015) 61px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════════
+   HEADER / TITLE BANNER
+═══════════════════════════════════════════════ */
+.header-wrap {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, #0d1f40 0%, var(--navy-2) 100%);
+  border-bottom: 4px solid var(--gold);
+  padding: 12px 20px 10px;
+  text-align: center;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+}
+
+.header-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--gold-2);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.header-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(32px, 6vw, 64px);
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-shadow:
+    0 0 20px rgba(245,200,66,0.5),
+    3px 3px 0 var(--gold-2),
+    6px 6px 0 rgba(0,0,0,0.4);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.header-subtitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4px;
+}
+
+/* Round indicator */
+.round-indicator {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.5);
+  text-align: right;
+}
+.round-indicator span {
+  display: block;
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  color: var(--gold);
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════
+   SCOREBOARD
+═══════════════════════════════════════════════ */
+.scoreboard {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 0;
+  padding: 0 0 0 0;
+}
+
+.team-score {
+  flex: 1;
+  padding: 14px 20px;
+  text-align: center;
+  position: relative;
+  transition: background 0.3s;
+}
+
+.team-score:first-child {
+  background: linear-gradient(135deg, #1a0a30 0%, #2a1060 100%);
+  border-right: 2px solid var(--gold);
+}
+.team-score:last-child {
+  background: linear-gradient(225deg, #1a0a30 0%, #2a1060 100%);
+  border-left: 2px solid var(--gold);
+}
+
+.team-score.active-turn {
+  background: linear-gradient(135deg, #0a3060 0%, #1a5090 100%) !important;
+}
+.team-score.active-turn::after {
+  content: '▶ YOUR TURN';
+  position: absolute;
+  bottom: 4px;
+  left: 0; right: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  animation: blink 1s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.team-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.team-name {
+  font-family: 'Anton', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.team-points {
+  font-family: 'Anton', sans-serif;
+  font-size: 42px;
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(245,200,66,0.4);
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.team-points.bump {
+  animation: scoreBump 0.35s ease-out;
+}
+@keyframes scoreBump {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.35); color: var(--gold-3); }
+  100% { transform: scale(1); }
+}
+
+/* ═══════════════════════════════════════════════
+   QUESTION BANNER
+═══════════════════════════════════════════════ */
+.question-wrap {
+  position: relative;
+  z-index: 1;
+  margin: 18px 16px 14px;
+  background: linear-gradient(135deg, var(--navy-3), #0d2050);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 16px 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+  text-align: center;
+}
+
+.question-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--gold-2);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.question-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(18px, 3.5vw, 28px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.25;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* ═══════════════════════════════════════════════
+   ANSWER TILES
+═══════════════════════════════════════════════ */
+.answers-wrap {
+  position: relative;
+  z-index: 1;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
 
 .answers {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Force exactly two equal-width columns */
-    gap: 10px; /* Add spacing between boxes */
-    justify-items: start; /* Align items to the start of each column */
-    align-items: start; /* Ensure items align properly within rows */
-    margin: 0 auto; /* Center the grid container itself if needed */
-    max-width: 650px; /* Optional: Set a maximum width for the container */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
-
-        .tile {
-            width: 300px;           /* Fixed width for all tiles */
-            min-height: 50px;       /* Minimum height for tiles */
-            background: lightblue;  /* Tile background color */
-            border: 1px solid #000; /* Add a border for the tile */
-            padding: 10px;          /* Add padding for better readability */
-            box-sizing: border-box; /* Include padding/border in sizing */
-            text-align: center;     /* Center-align the text */
-            font-size: 18px;        /* Set a consistent font size */
-            overflow-wrap: break-word; /* Ensure long words break properly */
-            cursor: pointer;        /* Add a pointer cursor for interactivity */
-        }
-
-        .tile.revealed {
-            background: lightgreen; /* Change background for revealed tiles */
-            cursor: default;        /* Disable pointer effect on revealed tiles */
-        }
-
-        .strike-zone {
-    display: flex; /* Use flexbox to arrange strikes side by side */
-    gap: 10px; /* Add spacing between the strikes */
-    justify-content: center; /* Center-align the strikes horizontally */
-    margin: 20px; /* Add some margin around the strike zone */
+.answers.single-col {
+  grid-template-columns: 1fr;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.strike {
-    color: red; /* Keep the red color for strikes */
-    font-size: 30px; /* Ensure the strikes are noticeable */
-    font-weight: bold; /* Emphasize the strikes with bold text */
+.tile {
+  position: relative;
+  background: var(--tile-bg);
+  border: 2px solid rgba(245,200,66,0.3);
+  border-radius: 6px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 58px;
+  overflow: hidden;
 }
 
+.tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
 
-        .input-box {
-            margin: 20px;
-        }
+.tile:hover:not(.revealed) {
+  border-color: rgba(245,200,66,0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
 
-        .instructions {
-            display: none; /* Hide instructions initially */
-            font-size: 16px;
-            margin: 20px;
-        }
+.tile-number {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  color: var(--gold);
+  min-width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+  text-shadow: 0 0 10px rgba(245,200,66,0.3);
+}
 
-        #help {
-            margin: 10px;
-        }
-    </style>
+.tile-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.15);
+  letter-spacing: 3px;
+  flex: 1;
+  transition: color 0.3s;
+}
+
+.tile-pct {
+  font-family: 'Anton', sans-serif;
+  font-size: 20px;
+  color: var(--gold-3);
+  opacity: 0;
+  transition: opacity 0.3s;
+  flex-shrink: 0;
+}
+
+/* Revealed tile */
+.tile.revealed {
+  background: var(--tile-reveal);
+  border-color: rgba(255,255,255,0.3);
+  cursor: default;
+  animation: tileReveal 0.4s ease-out;
+}
+
+.tile.revealed .tile-text {
+  color: var(--white);
+  letter-spacing: 0.5px;
+}
+
+.tile.revealed .tile-pct {
+  opacity: 1;
+}
+
+@keyframes tileReveal {
+  0%  { transform: scaleX(0.85); opacity: 0.4; }
+  60% { transform: scaleX(1.03); }
+  100%{ transform: scaleX(1);    opacity: 1;  }
+}
+
+/* ═══════════════════════════════════════════════
+   INPUT AREA
+═══════════════════════════════════════════════ */
+.input-section {
+  position: relative;
+  z-index: 1;
+  padding: 0 16px;
+  margin-bottom: 14px;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+  background: var(--navy-2);
+  border: 2px solid var(--gold);
+  border-radius: 6px;
+  padding: 6px 6px 6px 16px;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 30px rgba(245,200,66,0.06);
+}
+
+#user-answer {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 1px;
+  caret-color: var(--gold);
+}
+
+#user-answer::placeholder {
+  color: rgba(255,255,255,0.25);
+  font-weight: 400;
+}
+
+.submit-btn {
+  background: linear-gradient(180deg, var(--gold), var(--gold-2));
+  border: none;
+  border-radius: 4px;
+  padding: 10px 22px;
+  font-family: 'Anton', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
+  flex-shrink: 0;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(180deg, var(--gold-3), var(--gold));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.4);
+}
+
+.submit-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+}
+
+/* ═══════════════════════════════════════════════
+   STRIKES
+═══════════════════════════════════════════════ */
+.strike-section {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  min-height: 48px;
+}
+
+.strike-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+}
+
+.strike-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.strike-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(192,24,42,0.3);
+  background: rgba(192,24,42,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Anton', sans-serif;
+  font-size: 18px;
+  color: rgba(192,24,42,0.3);
+  transition: all 0.3s;
+}
+
+.strike-icon.active {
+  border-color: var(--red-2);
+  background: rgba(224,32,48,0.2);
+  color: var(--red-2);
+  box-shadow: 0 0 12px rgba(224,32,48,0.5);
+  animation: strikeActivate 0.4s ease-out;
+}
+
+@keyframes strikeActivate {
+  0%  { transform: scale(0.5) rotate(-20deg); opacity: 0; }
+  70% { transform: scale(1.2) rotate(5deg); }
+  100%{ transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Big Strike Overlay */
+.big-strike-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.big-strike-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.big-strike-x {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(120px, 25vw, 260px);
+  color: var(--red);
+  text-shadow:
+    0 0 40px rgba(224,32,48,0.8),
+    0 0 80px rgba(224,32,48,0.4),
+    4px 4px 0 #800010;
+  animation: bigXIn 0.3s ease-out;
+  line-height: 1;
+}
+
+@keyframes bigXIn {
+  0%  { transform: scale(2.5) rotate(15deg); opacity: 0; }
+  70% { transform: scale(0.9) rotate(-3deg); }
+  100%{ transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════
+   BOTTOM CONTROLS
+═══════════════════════════════════════════════ */
+.controls-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 0 16px 16px;
+  flex-wrap: wrap;
+}
+
+.ctrl-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid;
+  transition: all 0.18s;
+}
+
+.ctrl-btn-primary {
+  background: linear-gradient(180deg, #2a8a50, #1a6038);
+  border-color: #4aaa70;
+  color: var(--white);
+  box-shadow: 0 3px 0 #0a3020;
+  display: none;
+}
+.ctrl-btn-primary:hover { background: linear-gradient(180deg, #3aaa60, #2a8a50); transform: translateY(-1px); }
+.ctrl-btn-primary:active { transform: translateY(1px); }
+
+.ctrl-btn-ghost {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.5);
+}
+.ctrl-btn-ghost:hover { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,0.06); }
+
+/* ═══════════════════════════════════════════════
+   INSTRUCTIONS PANEL
+═══════════════════════════════════════════════ */
+.instructions-panel {
+  position: relative;
+  z-index: 1;
+  display: none;
+  margin: 0 16px 16px;
+  background: rgba(15,32,68,0.9);
+  border: 1px solid rgba(245,200,66,0.3);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+
+.instructions-panel h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.instructions-panel p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+}
+
+/* ═══════════════════════════════════════════════
+   WIN MODAL
+═══════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-box {
+  background: linear-gradient(160deg, var(--navy-2), var(--navy-3));
+  border: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 36px 40px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 0 60px rgba(245,200,66,0.25), 0 20px 60px rgba(0,0,0,0.7);
+  animation: modalIn 0.4s ease-out;
+}
+
+@keyframes modalIn {
+  0%  { transform: scale(0.7); opacity: 0; }
+  70% { transform: scale(1.04); }
+  100%{ transform: scale(1); opacity: 1; }
+}
+
+.modal-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--gold-2);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.modal-headline {
+  font-family: 'Anton', sans-serif;
+  font-size: 40px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(245,200,66,0.5);
+  margin-bottom: 8px;
+}
+
+.modal-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 24px;
+}
+
+.modal-btn {
+  font-family: 'Anton', sans-serif;
+  font-size: 15px;
+  letter-spacing: 3px;
+  background: linear-gradient(180deg, var(--gold), var(--gold-2));
+  color: var(--navy);
+  border: none;
+  border-radius: 6px;
+  padding: 13px 32px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.4);
+  transition: all 0.15s;
+}
+.modal-btn:hover { background: linear-gradient(180deg, var(--gold-3), var(--gold)); transform: translateY(-2px); }
+.modal-btn-ghost {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.5);
+  margin-left: 10px;
+  border-radius: 6px;
+  padding: 11px 24px;
+  font-family: 'Anton', sans-serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.modal-btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ═══════════════════════════════════════════════
+   GAME OVER SCREEN
+═══════════════════════════════════════════════ */
+#game-over-modal .modal-box {
+  border-color: var(--gold-3);
+  box-shadow: 0 0 80px rgba(245,200,66,0.3), 0 20px 60px rgba(0,0,0,0.7);
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 520px) {
+  .team-points { font-size: 32px; }
+  .answers { grid-template-columns: 1fr; }
+  .header-title { font-size: 28px; }
+  .round-indicator { display: none; }
+}
+</style>
 </head>
 <body>
-    <div class="header">Langley's Family Feud</div> <!-- Updated Header -->
-    <div class="question">Question will appear here</div>
-    <div class="scoreboard">
-        <div class="team-score" id="team-1-score">
-            <h3>Team 1</h3>
-            <p>0</p> <!-- Initial score -->
-        </div>
-        <div class="team-score" id="team-2-score">
-            <h3>Team 2</h3>
-            <p>0</p> <!-- Initial score -->
-        </div>
-    </div>
-    
-    <div class="answers">
-        <!-- Tiles will be dynamically added here using JavaScript -->
-    </div>
-    <div class="input-box">
-        <input type="text" id="user-answer" placeholder="Type your answer here" />
-        <button onclick="submitAnswer()">Submit</button>
-    </div>
-    <div class="strike-zone"></div>
-    <button id="next-round" style="display: none;">Next Round</button>
-    <button id="help" onclick="toggleInstructions()">Help</button>
-    <div class="instructions">
-        Enter an answer in the text box and click "Submit." If your answer matches one of the hidden tiles, it will be revealed. Each team can keep answering until they get three strikes. The team with the most points after 5 rounds wins!
-    </div>
-    <script src="script.js"></script>
-</body>
 
+<!-- ═══════ HEADER ═══════ -->
+<div class="header-wrap">
+  <div class="header-eyebrow">Presenting</div>
+  <div class="header-title">Langley's Family Feud</div>
+  <div class="header-subtitle">The Family Game Night Edition</div>
+  <strong id="versionTag" style="font-size:0.75em;display:block;font-family:'Barlow Condensed',sans-serif;font-weight:400;color:rgba(255,255,255,0.3);letter-spacing:2px;margin-top:5px;font-style:italic;">
+    by Gary Langley — loading version…
+  </strong>
+  <div class="round-indicator">
+    ROUND<span id="round-display">1</span>OF 8
+  </div>
+</div>
+
+<!-- ═══════ SCOREBOARD ═══════ -->
+<div class="scoreboard">
+  <div class="team-score active-turn" id="team-1-score">
+    <div class="team-label">Team</div>
+    <div class="team-name">Team 1</div>
+    <div class="team-points" id="score-1">0</div>
+  </div>
+  <div class="team-score" id="team-2-score">
+    <div class="team-label">Team</div>
+    <div class="team-name">Team 2</div>
+    <div class="team-points" id="score-2">0</div>
+  </div>
+</div>
+
+<!-- ═══════ QUESTION ═══════ -->
+<div class="question-wrap">
+  <div class="question-label">Survey Says…</div>
+  <div class="question-text" id="question-text">Loading question…</div>
+</div>
+
+<!-- ═══════ ANSWERS ═══════ -->
+<div class="answers-wrap">
+  <div class="answers" id="answers-grid"></div>
+</div>
+
+<!-- ═══════ INPUT ═══════ -->
+<div class="input-section">
+  <div class="input-row">
+    <input type="text" id="user-answer" placeholder="Type your answer here…" autocomplete="off" />
+    <button class="submit-btn" onclick="submitAnswer()">Submit</button>
+  </div>
+</div>
+
+<!-- ═══════ STRIKES ═══════ -->
+<div class="strike-section">
+  <div class="strike-label">Strikes</div>
+  <div class="strike-icons" id="strike-icons">
+    <div class="strike-icon" id="strike-1">X</div>
+    <div class="strike-icon" id="strike-2">X</div>
+    <div class="strike-icon" id="strike-3">X</div>
+  </div>
+</div>
+
+<!-- ═══════ BOTTOM CONTROLS ═══════ -->
+<div class="controls-row">
+  <button class="ctrl-btn ctrl-btn-primary" id="next-round" onclick="nextRound()">Next Round →</button>
+  <button class="ctrl-btn ctrl-btn-ghost" onclick="toggleInstructions()">? How to Play</button>
+</div>
+
+<!-- ═══════ INSTRUCTIONS ═══════ -->
+<div class="instructions-panel" id="instructions-panel">
+  <h3>How to Play</h3>
+  <p>
+    Two teams take turns guessing the most popular survey answers. Type your answer and hit <strong>Submit</strong>. 
+    If it matches a hidden answer, the tile flips and your team earns those points. 
+    Three strikes and control passes to the other team. 
+    The team that reveals all answers — or has the most points after 8 rounds — wins!
+  </p>
+</div>
+
+<!-- ═══════ BIG STRIKE OVERLAY ═══════ -->
+<div class="big-strike-overlay" id="big-strike-overlay">
+  <div class="big-strike-x">X</div>
+</div>
+
+<!-- ═══════ ROUND WIN MODAL ═══════ -->
+<div class="modal-overlay" id="round-modal">
+  <div class="modal-box">
+    <div class="modal-eyebrow">Round Complete</div>
+    <div class="modal-headline" id="round-modal-headline">Team 1 Wins!</div>
+    <div class="modal-sub" id="round-modal-sub">+0 points this round</div>
+    <button class="modal-btn" onclick="nextRound()">Next Round →</button>
+  </div>
+</div>
+
+<!-- ═══════ GAME OVER MODAL ═══════ -->
+<div class="modal-overlay" id="game-over-modal">
+  <div class="modal-box">
+    <div class="modal-eyebrow" style="color:var(--gold-3)">Game Over</div>
+    <div class="modal-headline" id="gameover-headline">Team 1 Wins!</div>
+    <div class="modal-sub" id="gameover-sub">Final scores below</div>
+    <div style="display:flex;gap:20px;justify-content:center;margin:16px 0 24px">
+      <div style="text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:3px;color:rgba(255,255,255,0.4);margin-bottom:4px">TEAM 1</div>
+        <div style="font-family:'Anton',sans-serif;font-size:36px;color:var(--gold)" id="final-score-1">0</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:3px;color:rgba(255,255,255,0.4);margin-bottom:4px">TEAM 2</div>
+        <div style="font-family:'Anton',sans-serif;font-size:36px;color:var(--gold)" id="final-score-2">0</div>
+      </div>
+    </div>
+    <button class="modal-btn" onclick="restartGame()">Play Again</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+const scenarios = [
+  {
+    question: "Name something you do in the morning",
+    answers: [
+      { text: "Brush Teeth",    percentage: 41, keywords: ["brush", "teeth"] },
+      { text: "Eat Breakfast",  percentage: 25, keywords: ["eat", "breakfast"] },
+      { text: "Take a Shower",  percentage: 15, keywords: ["shower", "bath"] },
+      { text: "Check Phone",    percentage: 10, keywords: ["phone", "cell"] },
+      { text: "Make Coffee",    percentage:  9, keywords: ["coffee"] },
+    ],
+  },
+  {
+    question: "Name something people do to unwind after a long day",
+    answers: [
+      { text: "Watch TV/Movies",           percentage: 27, keywords: ["tv", "movie", "television", "movies", "video"] },
+      { text: "Read a Book",               percentage: 20, keywords: ["read", "book", "novel", "magazine"] },
+      { text: "Take a Bath",               percentage: 18, keywords: ["shower", "bath"] },
+      { text: "Go for a Walk",             percentage: 15, keywords: ["walk", "run", "stroll", "hike", "jog"] },
+      { text: "Listen to Music",           percentage: 10, keywords: ["music", "podcast"] },
+      { text: "Have a Drink",              percentage:  7, keywords: ["drink", "beer", "wine"] },
+      { text: "Meditate / Yoga",           percentage:  3, keywords: ["yoga", "meditate", "exercise", "pray"] },
+      { text: "Spend Time with Family",    percentage:  9, keywords: ["friends", "family", "kids"] },
+    ],
+  },
+  {
+    question: "Name a popular flavor of ice cream",
+    answers: [
+      { text: "Vanilla",            percentage: 27, keywords: ["vanilla"] },
+      { text: "Chocolate",          percentage: 20, keywords: ["chocolate"] },
+      { text: "Strawberry",         percentage:  9, keywords: ["strawberry"] },
+      { text: "Mint Choc Chip",     percentage:  9, keywords: ["mint"] },
+      { text: "Cookies & Cream",    percentage:  9, keywords: ["cookies", "cream"] },
+      { text: "Rocky Road",         percentage:  9, keywords: ["rocky", "road"] },
+      { text: "Pistachio",          percentage:  8, keywords: ["pistachio"] },
+      { text: "Coffee",             percentage:  8, keywords: ["coffee"] },
+    ],
+  },
+  {
+    question: "Name something people often do on vacation",
+    answers: [
+      { text: "Relax on the Beach",  percentage: 23, keywords: ["beach"] },
+      { text: "Explore New Places",  percentage: 20, keywords: ["explore"] },
+      { text: "Try Local Food",      percentage: 15, keywords: ["food", "cuisine", "restaurants", "eat"] },
+      { text: "Take Photos",         percentage: 15, keywords: ["photo", "photos", "photography"] },
+      { text: "Go Shopping",         percentage: 14, keywords: ["shopping", "souvenirs"] },
+      { text: "Visit Attractions",   percentage: 13, keywords: ["sightseeing", "tours", "landmarks", "tour"] },
+    ],
+  },
+  {
+    question: "Name a popular type of cuisine",
+    answers: [
+      { text: "Italian",   percentage: 40, keywords: ["italian", "pasta", "pizza"] },
+      { text: "Mexican",   percentage: 36, keywords: ["mexican", "tacos", "burrito"] },
+      { text: "Chinese",   percentage: 14, keywords: ["chinese"] },
+      { text: "American",  percentage: 10, keywords: ["american", "burger", "bbq"] },
+    ],
+  },
+  {
+    question: "Name a common reason people go to the beach",
+    answers: [
+      { text: "Sunbathing",         percentage: 23, keywords: ["sunbathing", "sunbathe", "tan"] },
+      { text: "Swimming",           percentage: 20, keywords: ["swimming", "swim"] },
+      { text: "Building Sandcastles", percentage: 6, keywords: ["sandcastles", "sand"] },
+      { text: "Picnics",            percentage:  4, keywords: ["picnic"] },
+    ],
+  },
+  {
+    question: "Name something you'd find in a bathroom",
+    answers: [
+      { text: "Toothbrush", percentage: 25, keywords: ["toothbrush"] },
+      { text: "Shampoo",    percentage: 23, keywords: ["shampoo"] },
+      { text: "Soap",       percentage: 20, keywords: ["soap"] },
+      { text: "Toothpaste", percentage: 16, keywords: ["toothpaste"] },
+      { text: "Razor",      percentage: 16, keywords: ["razor", "shaver"] },
+    ],
+  },
+  {
+    question: "Name an activity people do on a lazy weekend",
+    answers: [
+      { text: "Watch TV/Movies",  percentage: 27, keywords: ["tv", "movie", "television", "movies"] },
+      { text: "Read a Book",      percentage: 24, keywords: ["read", "book", "novel"] },
+      { text: "Cook a Meal",      percentage: 18, keywords: ["cook", "bake"] },
+      { text: "Sleep In",         percentage: 16, keywords: ["sleep", "nap"] },
+      { text: "Go for a Walk",    percentage: 15, keywords: ["walk", "run", "stroll", "hike"] },
+    ],
+  },
+];
+
+// ══════════════════════════════════════════════
+//  GAME STATE
+// ══════════════════════════════════════════════
+let currentScenario = 0;
+let currentTeam = 1;
+let strikes = [0, 0];
+let scores  = [0, 0];
+let revealedAnswers = [];
+let roundPointsEarned = 0;
+let inputLocked = false;
+
+// Shuffle once at load
+(function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+})(scenarios);
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+function loadScenario() {
+  const scenario = scenarios[currentScenario];
+  revealedAnswers   = [];
+  roundPointsEarned = 0;
+  strikes           = [0, 0];
+
+  // Question
+  document.getElementById('question-text').textContent = scenario.question;
+  document.getElementById('round-display').textContent = currentScenario + 1;
+
+  // Tiles
+  const grid = document.getElementById('answers-grid');
+  grid.innerHTML = '';
+
+  // Single-col for ≤5 answers
+  grid.className = scenario.answers.length <= 5 ? 'answers single-col' : 'answers';
+
+  scenario.answers.forEach((ans, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+    tile.id = `tile-${i}`;
+    tile.innerHTML = `
+      <div class="tile-number">${i + 1}</div>
+      <div class="tile-text">— — — — —</div>
+      <div class="tile-pct"></div>
+    `;
+    grid.appendChild(tile);
+  });
+
+  // Strikes reset
+  renderStrikes(0);
+
+  // Hide next-round button
+  document.getElementById('next-round').style.display = 'none';
+
+  // Active team highlight
+  updateActiveTeam();
+}
+
+// ══════════════════════════════════════════════
+//  TEAM HIGHLIGHT
+// ══════════════════════════════════════════════
+function updateActiveTeam() {
+  document.getElementById('team-1-score').classList.toggle('active-turn', currentTeam === 1);
+  document.getElementById('team-2-score').classList.toggle('active-turn', currentTeam === 2);
+}
+
+// ══════════════════════════════════════════════
+//  SCORE
+// ══════════════════════════════════════════════
+function updateScore(team, points) {
+  scores[team - 1] += points;
+  const el = document.getElementById(`score-${team}`);
+  el.textContent = scores[team - 1];
+  el.classList.remove('bump');
+  void el.offsetWidth; // reflow to restart animation
+  el.classList.add('bump');
+  setTimeout(() => el.classList.remove('bump'), 400);
+}
+
+// ══════════════════════════════════════════════
+//  STRIKES
+// ══════════════════════════════════════════════
+function renderStrikes(count) {
+  for (let i = 1; i <= 3; i++) {
+    const el = document.getElementById(`strike-${i}`);
+    el.classList.toggle('active', i <= count);
+  }
+}
+
+function addStrike() {
+  strikes[currentTeam - 1]++;
+  const count = strikes[currentTeam - 1];
+
+  // Big X overlay
+  const overlay = document.getElementById('big-strike-overlay');
+  overlay.classList.add('show');
+  inputLocked = true;
+
+  setTimeout(() => {
+    overlay.classList.remove('show');
+    renderStrikes(count);
+    inputLocked = false;
+
+    if (count >= 3) {
+      // Switch teams
+      currentTeam = currentTeam === 1 ? 2 : 1;
+      strikes[currentTeam - 1] = 0;
+      renderStrikes(0);
+      updateActiveTeam();
+      showToast(`3 strikes! Team ${currentTeam} takes control.`);
+    }
+  }, 1400);
+}
+
+// ══════════════════════════════════════════════
+//  SUBMIT
+// ══════════════════════════════════════════════
+function submitAnswer() {
+  if (inputLocked) return;
+
+  const input = document.getElementById('user-answer');
+  const userInput = input.value.trim().toLowerCase();
+  if (!userInput) return;
+  input.value = '';
+
+  const scenario = scenarios[currentScenario];
+  let matched = false;
+
+  scenario.answers.forEach((answer, index) => {
+    if (revealedAnswers.includes(index)) return;
+    const isMatch = answer.keywords.some(kw =>
+      userInput.includes(kw.toLowerCase())
+    );
+    if (isMatch) {
+      revealTile(index, answer);
+      matched = true;
+    }
+  });
+
+  if (!matched) {
+    addStrike();
+  } else if (revealedAnswers.length === scenario.answers.length) {
+    setTimeout(() => showRoundWin(), 500);
+  }
+
+  input.focus();
+}
+
+function revealTile(index, answer) {
+  const tile = document.getElementById(`tile-${index}`);
+  tile.querySelector('.tile-text').textContent = answer.text;
+  tile.querySelector('.tile-pct').textContent  = `${answer.percentage}%`;
+  tile.classList.add('revealed');
+  revealedAnswers.push(index);
+  roundPointsEarned += answer.percentage;
+  updateScore(currentTeam, answer.percentage);
+}
+
+// ══════════════════════════════════════════════
+//  ROUND WIN
+// ══════════════════════════════════════════════
+function showRoundWin() {
+  if (currentScenario + 1 >= scenarios.length) {
+    showGameOver();
+    return;
+  }
+  document.getElementById('round-modal-headline').textContent = `Team ${currentTeam} Wins!`;
+  document.getElementById('round-modal-sub').textContent = `+${roundPointsEarned} points this round`;
+  document.getElementById('round-modal').classList.add('show');
+}
+
+// ══════════════════════════════════════════════
+//  NEXT ROUND
+// ══════════════════════════════════════════════
+function nextRound() {
+  document.getElementById('round-modal').classList.remove('show');
+  currentScenario++;
+
+  if (currentScenario >= scenarios.length) {
+    showGameOver();
+    return;
+  }
+
+  // Alternate who goes first
+  currentTeam = currentTeam === 1 ? 2 : 1;
+  loadScenario();
+}
+
+// ══════════════════════════════════════════════
+//  GAME OVER
+// ══════════════════════════════════════════════
+function showGameOver() {
+  const winner = scores[0] >= scores[1] ? 1 : 2;
+  document.getElementById('gameover-headline').textContent =
+    scores[0] === scores[1] ? "It's a Tie!" : `Team ${winner} Wins!`;
+  document.getElementById('gameover-sub').textContent =
+    scores[0] === scores[1] ? 'An incredible match!' : 'An outstanding performance!';
+  document.getElementById('final-score-1').textContent = scores[0];
+  document.getElementById('final-score-2').textContent = scores[1];
+  document.getElementById('game-over-modal').classList.add('show');
+}
+
+function restartGame() {
+  scores = [0, 0];
+  currentScenario = 0;
+  currentTeam = 1;
+  document.getElementById('score-1').textContent = '0';
+  document.getElementById('score-2').textContent = '0';
+  document.getElementById('game-over-modal').classList.remove('show');
+
+  // Re-shuffle
+  for (let i = scenarios.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [scenarios[i], scenarios[j]] = [scenarios[j], scenarios[i]];
+  }
+  loadScenario();
+}
+
+// ══════════════════════════════════════════════
+//  INSTRUCTIONS TOGGLE
+// ══════════════════════════════════════════════
+function toggleInstructions() {
+  const p = document.getElementById('instructions-panel');
+  p.style.display = p.style.display === 'block' ? 'none' : 'block';
+}
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+function showToast(msg) {
+  let t = document.getElementById('toast-msg');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast-msg';
+    t.style.cssText = `
+      position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+      background:var(--navy-3);border:1px solid var(--gold);border-radius:6px;
+      padding:10px 22px;font-family:'Barlow Condensed',sans-serif;font-size:15px;
+      letter-spacing:2px;color:var(--gold);z-index:700;
+      box-shadow:0 4px 20px rgba(0,0,0,0.5);
+      opacity:0;transition:opacity 0.25s;white-space:nowrap;
+    `;
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.opacity = '0'; }, 2500);
+}
+
+// ══════════════════════════════════════════════
+//  KEYBOARD ENTER
+// ══════════════════════════════════════════════
+document.getElementById('user-answer').addEventListener('keydown', e => {
+  if (e.key === 'Enter') submitAnswer();
+});
+
+// ══════════════════════════════════════════════
+//  START
+// ══════════════════════════════════════════════
+loadScenario();
+
+// ══════════════════════════════════════════════
+//  VERSION TAG
+// ══════════════════════════════════════════════
+async function updateCommitHash() {
+  const repo = "jellybean1979/Family-Feud";
+  const branch = "main";
+  try {
+    const response = await fetch(`https://api.github.com/repos/${repo}/commits/${branch}`);
+    const data = await response.json();
+    const hash = data.sha.substring(0, 7);
+    document.getElementById("versionTag").textContent = `by Gary Langley — build ${hash}`;
+  } catch (err) {
+    document.getElementById("versionTag").textContent = "by Gary Langley — build unknown";
+  }
+}
+updateCommitHash();
+</script>
+</body>
 </html>
